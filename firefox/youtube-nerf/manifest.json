@@ -1,0 +1,15 @@
+{
+
+  "manifest_version": 2,
+  "name": "YoutubeNerf",
+  "version": "1.0",
+
+  "description": "Blocks all recommendations & comments on youtube for firefox",
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["youtube.js"]
+    }
+  ]
+}
