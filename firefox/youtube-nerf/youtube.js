@@ -1,39 +1,11 @@
-var count = 0
-
-// an exception can crash the whole extension and it's too tedious
-// to handle all the cases
-function saferunner(foo) {
-  try {
-    foo()
-  } catch (e) {}
-}
-
-function scrub() {
-  saferunner(() => document.querySelectorAll('ytd-browse').forEach(node => {node.style.display = 'none'}))
-  saferunner(() => document.querySelector('#related').style.display = 'none')
-  saferunner(() => document.querySelector('#comments').style.display = 'none')
-  saferunner(() => document.querySelector('#info').style.display = 'none')
-}
-
-// scrub in quick succession early on, so you never see flickering
-var rampinterval = 20;
-var rampcount = 15000/rampinterval;
-function rampup() {
-  if (rampcount > 0) {
-    rampcount--;
-    scrub()
-    setTimeout(rampup, 20)
+(function scrub() {
+  if (!document.getElementById('youtube-nerf')) {
+    var css = '.ytd-browse, #related, #comments, #info {display: none !important;}',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    head.appendChild(style);
+    style.setAttribute('id', 'youtube-nerf')
+    style.appendChild(document.createTextNode(css));
   }
-}
-
-
-// how often the page gets scrubbed in millis
-var interval = 200 
-
-function startloop() {
-  scrub()
-  setTimeout(startloop, interval)
-}
-
-rampup()
-startloop()
+  setTimeout(scrub, 1000)
+})();
